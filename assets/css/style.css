@@ -7,8 +7,8 @@ body {
 }
 
 #blocklyDiv {
-  height: 700px;
-  width: 752px;
+  height: 750px;
+  width: 900px;
 }
 
 .game {
@@ -16,7 +16,7 @@ body {
   right: 8px;
   top: 8px;
   width: 500px;
-  height: 695px;
+  height: 745px;
   border: 2px dashed #000;
   display: flex;
   align-items: center;
