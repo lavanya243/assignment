@@ -15,8 +15,9 @@ let time = date.getHours() + ":" + date.getMinutes();
 Blockly.Blocks['bot_block'] = {
   init: function() {
     this.appendStatementInput("NAME")
-        //.setCheck(null)
+        .setCheck(null)
         .appendField("Bot");
+        this.setInputsInline(true);
         this.setColour(130);
 
  this.setTooltip("");
@@ -24,17 +25,19 @@ Blockly.Blocks['bot_block'] = {
   }
 };
 
+
+
 Blockly.Blocks['dropdown_block'] = {
   init: function() {
     this.appendStatementInput("dropdown")
-        //.setCheck(null)
+        .setCheck(null)
         .appendField("Ask me a question:")
         .appendField(new Blockly.FieldDropdown([["What is the date today?",today], 
                                      
                                                 ["What is the time now?",time], 
                                                 ["How are you?","I am doing good. Thank you."], 
                                                 ["What is JavaScript?","It is a scripting language for the web"], 
-                                                ["What is your name?","Lavanya Narayanan"]]), "input");
+                                                ["What is your name?","Lavanya Narayanan"]]), "dropdown");
     this.setPreviousStatement(true,"NAME");
     this.setColour(230);
     this.setTooltip("");
@@ -42,46 +45,16 @@ Blockly.Blocks['dropdown_block'] = {
   }
 };
  
+
+
 Blockly.JavaScript['dropdown_block'] = function (block) {
-  let text_input;
-  let code;
-  let inputTextValue;
-  Blockly.JavaScript['bot_block'] = function ()
-  {
-    text_input = block.getFieldValue("input");
-    code = `
-        inputTextValue = "${text_input}";
-              `;
-    return code;
-  };
-};
-
- /*
-Blockly.JavaScript['bot_block'] = function () {
- 
-  Blockly.JavaScript['dropdown_block'] = function (block)
-  {
-    var text_input = block.getFieldValue("input");
-    var code = `
-    var inputTextValue = "${text_input}";
-    `;
-              
-    return code;
-  };
-
-};
-
-    //Blockly.JavaScript['dropdown_block']();
- 
-  /*  Blockly.JavaScript['dropdown_block'] = function (block) {
-
-        let text_input = block.getFieldValue("input");
-        let code = `
-                  var inputTextValue = "${text_input}";
-                  `;
-        return code;
-      };*/
-
+  return block.getFieldValue("dropdown");
+}
+Blockly.JavaScript['bot_block'] = function(block){
+  var statements_d = Blockly.JavaScript.statementToCode(block, 'NAME');
+  let code = `inputTextValue = "${statements_d}";`
+  return code;
+}
 
     
     var workspace = Blockly.inject("blocklyDiv", {
@@ -98,7 +71,6 @@ Blockly.JavaScript['bot_block'] = function () {
     }
     
     function runcode() {
-      // Generate JavaScript code and run it.
       var geval = eval;
       try {
         geval(Blockly.JavaScript.workspaceToCode(workspace));
@@ -106,16 +78,7 @@ Blockly.JavaScript['bot_block'] = function () {
         console.error(e);
       }
       redrawUi();
-/*
-      Blockly.JavaScript.addReservedWords('code');
-      var code = Blockly.JavaScript.workspaceToCode(workspace);
-      
-      try {
-        eval(code);
-      } catch (e) {
-        alert(e);
-      }
-      redrawUi();*/
+
     }
     
     function reset() {
